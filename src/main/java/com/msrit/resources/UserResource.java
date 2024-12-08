@@ -14,10 +14,9 @@ import java.util.*;
 public class UserResource {
 
     private final UserDAO userDao;
+    private final TodoDAO todoDao; // Two DAO's can be passed while registering the resources
 
-    private final TodoDAO todoDao;   // two DAO's can be passed while registering the resources
 
-    // Constructor to inject DAOs
     public UserResource(UserDAO userDao, TodoDAO todoDao) {
         this.userDao = userDao;
         this.todoDao = todoDao;
@@ -62,7 +61,7 @@ public class UserResource {
     public Response getAllUser() {
         List<User> users = userDao.getAllUser();
         if (users.isEmpty()) {
-            return Response.status(Response.Status.NO_CONTENT).build();  // 204 No Content if no users found
+            return Response.status(Response.Status.NO_CONTENT).build(); // 204 No Content if no users found
         }
         return Response.status(Response.Status.OK)
                 .entity(users)
@@ -107,9 +106,9 @@ public class UserResource {
                     .build();
         }
         todo.setUser(user);
-        User updatedUser = userDao.addTodoToUser(user, todo);  // Save the user and cascade todo
+        userDao.addTodoToUser(user, todo); // Save the user and cascade todo
         return Response.status(Response.Status.CREATED)
-                .entity(todo)  // Return the created todo
+                .entity(todo) // Return the created todo
                 .build();
     }
 
@@ -117,13 +116,29 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}/getAllTodo")
     @UnitOfWork
-    public Response getAllTodo(@PathParam("id")int uid){
+    public Response getAllTodo(@PathParam("id") int uid) {
         User u = userDao.getUser(uid);
         if (u == null) {
-            Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("User not found with id: " + uid)
+                    .build();
         }
         List<Todo> td = u.getTodos();
-        return Response.ok("Success").entity(td).build();
+        return Response.status(Response.Status.OK)
+                .entity(td)
+                .build();
+    }
+
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    @Path("/{id}/deleteTodo")
+    public Response deleteTodo(@PathParam("id") int tid) {
+        todoDao.deleteTodo(tid);
+
+        return Response.status(Response.Status.OK)
+                .entity("Todo successfully deleted")
+                .build();
     }
 }
  // i am going to add some function
