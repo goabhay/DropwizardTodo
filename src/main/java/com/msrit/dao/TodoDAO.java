@@ -46,7 +46,7 @@ public class TodoDAO extends AbstractDAO<Todo> {
         }
         // Delete the todo object
         currentSession().delete(todo);
-        return 1; // Return success status
+        return 1;
     }
 
 
