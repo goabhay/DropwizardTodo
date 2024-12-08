@@ -7,6 +7,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
+
 @Path("/todo")
 public class TodoResources {
 
@@ -52,10 +54,18 @@ public class TodoResources {
         t.setTitle(todo.getTitle());
         t.setUser(todo.getUser()); // Update the associated user, if needed
 
-        todoDao.updateTodo(tid,t); // Save the updated Todo entity
+        todoDao.updateTodo(tid, t); // Save the updated Todo entity
         return Response.status(Response.Status.OK)
                 .entity(t)
                 .build();
     }
 
+    @GET
+    @Path("/allTodo")
+    @UnitOfWork
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllTodo() {
+        List<Todo> todos = todoDao.getAllTodo();
+        return Response.ok("Success").entity(todos).build();
+    }
 }

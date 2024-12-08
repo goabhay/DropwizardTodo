@@ -6,6 +6,7 @@ import io.dropwizard.hibernate.AbstractDAO;
 import jakarta.inject.Singleton;
 import jakarta.persistence.Query;
 import org.hibernate.SessionFactory;
+import java.util.*;
 
 public class TodoDAO extends AbstractDAO<Todo> {
 
@@ -47,6 +48,11 @@ public class TodoDAO extends AbstractDAO<Todo> {
         // Delete the todo object
         currentSession().delete(todo);
         return 1;
+    }
+
+    public List<Todo> getAllTodo(){
+        Query q = currentSession().createQuery("from Todo",TodoDAO.class);
+        return q.getResultList();
     }
 
 
