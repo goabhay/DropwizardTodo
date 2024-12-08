@@ -22,21 +22,22 @@ public class TodoDAO extends AbstractDAO<Todo> {
         return todo;
     }
 
-    public int updateTodo(int id, String title, String description, User user) {
-        Todo todo = get(id);
-        if (todo == null) {
-            return -1;
+    public int updateTodo(int id, Todo newTodoData) {
+        Todo existingTodo = get(id);
+        if (existingTodo == null) {
+            return -1; // Indicate that the Todo was not found
         }
 
-        // Update the fields
-        todo.setTitle(title);
-        todo.setDescription(description);
-        todo.setUser(user);
+        // Update the fields with the new data
+        existingTodo.setTitle(newTodoData.getTitle());
+        existingTodo.setDescription(newTodoData.getDescription());
+        existingTodo.setUser(newTodoData.getUser());
 
-        // Merge the updated todo object
-        currentSession().merge(todo);
-        return 1; // Return success status
+        // Merge the updated Todo object to persist changes
+        currentSession().merge(existingTodo);
+        return 1; // Indicate success
     }
+
 
     public int deleteTodo(int id) {
         Todo todo = get(id);
@@ -47,4 +48,6 @@ public class TodoDAO extends AbstractDAO<Todo> {
         currentSession().delete(todo);
         return 1; // Return success status
     }
+
+
 }
