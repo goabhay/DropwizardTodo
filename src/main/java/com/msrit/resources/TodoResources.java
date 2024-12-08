@@ -30,7 +30,7 @@ public class TodoResources {
         return Response.ok(t).build();
     }
 
-    @POST
+
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response saveTodo(Todo todo) {
@@ -44,19 +44,30 @@ public class TodoResources {
     @Path("/{tid}")
     @UnitOfWork
     public Response updateTodo(@PathParam("tid") int tid, Todo todo) {
-        Todo t = todoDao.getTodo(tid);
-        if (t == null) {
+        // Fetch the existing Todo object
+        Todo existingTodo = todoDao.getTodo(tid);
+        if (existingTodo == null) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("Todo not found with id: " + tid)
                     .build();
         }
-        t.setDescription(todo.getDescription());
-        t.setTitle(todo.getTitle());
-        t.setUser(todo.getUser()); // Update the associated user, if needed
 
-        todoDao.updateTodo(tid, t); // Save the updated Todo entity
+        // Update fields only if provided
+        if (todo.getDescription() != null && !todo.getDescription().isEmpty()) {
+            existingTodo.setDescription(todo.getDescription());
+        }
+        if (todo.getTitle() != null && !todo.getTitle().isEmpty()) {
+            existingTodo.setTitle(todo.getTitle());
+        }
+        if (todo.getUser() != null) {
+            existingTodo.setUser(todo.getUser());
+        }
+
+        // Save the updated Todo entity
+        todoDao.updateTodo(tid, existingTodo);
+
         return Response.status(Response.Status.OK)
-                .entity(t)
+                .entity(existingTodo)
                 .build();
     }
 
