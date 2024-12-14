@@ -8,6 +8,8 @@ services:
       MYSQL_ROOT_PASSWORD: pass
     ports:
       - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin:latest
@@ -21,3 +23,14 @@ services:
       PMA_PASSWORD: pass
     depends_on:
       - db
+
+  backend-app:
+    image: ghcr.io/goabhay/myproj:1.8
+    ports:
+      - "8083:8081"
+    depends_on:
+      - db
+      - phpmyadmin
+volumes:
+  mysql-data:
+    driver: local
