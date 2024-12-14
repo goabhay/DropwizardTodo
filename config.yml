@@ -15,7 +15,7 @@ database:
   driverClass: com.mysql.cj.jdbc.Driver
   user: root
   password: pass
-  url: jdbc:mysql://localhost:3307/stu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  url: jdbc:mysql://db:3306/stu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
   properties:
     hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate.show_sql: true

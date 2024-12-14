@@ -21,3 +21,11 @@ services:
       PMA_PASSWORD: pass
     depends_on:
       - db
+
+  backend-app:
+    image: ghcr.io/goabhay/myproj:1.8
+    ports:
+      - "8083:8081"
+    depends_on:
+      - db
+      - phpmyadmin
