@@ -140,5 +140,17 @@ public class UserResource {
                 .entity("Todo successfully deleted")
                 .build();
     }
+
+    @GET
+    @Path("/pendingTodo/{uid}")
+    @UnitOfWork
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPendingTask(@PathParam("uid")int uid){
+        List<Todo>ptodos =  userDao.pendingTodos(uid);
+        return Response.status(Response.Status.OK).entity(ptodos).build();
+    }
+
+
+
 }
  // i am going to add some function

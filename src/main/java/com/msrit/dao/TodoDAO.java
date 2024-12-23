@@ -55,5 +55,18 @@ public class TodoDAO extends AbstractDAO<Todo> {
         return q.getResultList();
     }
 
+    public Todo toggleTask(int id){
+        Todo td = get(id);
+        if(td != null){
+            td.toggleStatus();
+            persist(td);
+            return td;
+        }
+        return null;
+    }
+
+
+
+
 
 }

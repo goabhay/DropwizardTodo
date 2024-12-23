@@ -16,6 +16,10 @@ public class User {
     // @JsonManagedReference
     private List<Todo> todos = new ArrayList<>();
 
+    // if want to have a field which is not tracked by JPA mapping then use @Transient, else
+    // it is must to assign any mapping attribute
+    // private List<Todo> completedtodos = new ArrayList<>();
+
     public User() {}
 
     public User(String name, List<Todo> todos) {

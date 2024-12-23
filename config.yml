@@ -10,7 +10,7 @@ server:
   adminConnectors:
     - type: http
       port: 8081
-
+# jdbc:mysql://db:3306/stu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 database:
   driverClass: com.mysql.cj.jdbc.Driver
   user: root

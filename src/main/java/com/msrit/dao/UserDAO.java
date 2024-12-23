@@ -53,4 +53,16 @@ public class UserDAO extends AbstractDAO<User> {
         save(user);  // Saving the User will also save the Todo due to cascading
         return user;
     }
+
+    public List<Todo> pendingTodos(int uid) {
+        Query q = currentSession().createQuery(
+                "select t from User u join u.todos t where u.id = :uid and t.status = :status",
+                Todo.class
+        );
+        q.setParameter("uid", uid);
+        q.setParameter("status", "WIP");
+        return q.getResultList();
+    }
+
+
 }

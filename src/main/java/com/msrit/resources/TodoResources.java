@@ -79,4 +79,18 @@ public class TodoResources {
         List<Todo> todos = todoDao.getAllTodo();
         return Response.ok("Success").entity(todos).build();
     }
+
+    @GET
+    @Path("/toggle/{id}")
+    @UnitOfWork
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response toggleTask(@PathParam("id") int id){
+        todoDao.toggleTask(id);
+        return Response.status(Response.Status.OK).build();
+    }
+
+
+
+
 }
