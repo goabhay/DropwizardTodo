@@ -1,5 +1,6 @@
 package com.msrit.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
@@ -13,11 +14,11 @@ public class Todo {
     private int id;
     private String title;
     private String description;
-
-    //@Column(nullable = false)
     private String status;
 
-    private LocalDate startDate;
+
+    private LocalDate startDate = LocalDate.now();
+
     private LocalDate endDate;
 
     @ManyToOne
@@ -25,18 +26,21 @@ public class Todo {
     @JsonIgnore // To avoid recursion when serializing User object
     private User user;
 
-
     public Todo() {
 
     }
 
-    public Todo(String description, User user, String title) {
-        this.description = description;
-        this.user = user;
-        this.title = title;
-
-    }
-
+//    public Todo(String description, User user, String title, String status,LocalDate st, LocalDate en) {
+//        System.out.println("with all params line 37");
+//        this.description = description;
+//        this.user = user;
+//        this.title = title;
+//        this.status = status;
+//        this.startDate = st;
+//        this.endDate = en;
+//
+//        System.out.println("end date " + endDate);
+//    }
 
 
     public int getId() {
@@ -67,40 +71,31 @@ public class Todo {
         return status;
     }
 
-
-    @JsonSetter
+    //@JsonSetter("status")
     public void setStatus(String status) {
-        if (status != null) {
-            this.status = status;
-        } else {
-            this.status = "DONE"; // Default to DONE if status is null
+        if(this.status.equals("null")){
+            this.status = "WIP";
         }
+        else this.status = status;
     }
 
     public LocalDate getStartDate() {
         return startDate;
     }
 
-    @JsonSetter
-    public void setStartDate(LocalDate startDate) {
-        if (startDate != null) {
-            this.startDate = startDate;
-        } else {
-            this.startDate = LocalDate.now();
-        }
-    }
 
     public LocalDate getEndDate() {
         return endDate;
     }
 
-    @JsonSetter
+    //@JsonSetter("endDate")
     public void setEndDate(LocalDate endDate) {
-        if (endDate != null) {
-            this.endDate = endDate;
-        } else {
-            this.endDate = LocalDate.now().plusDays(10);
-        }
+       if(endDate != null) {
+           this.endDate = endDate;
+       }
+       else {
+           this.endDate = this.startDate.plusDays(10);
+       }
     }
 
     public User getUser() {
@@ -111,9 +106,8 @@ public class Todo {
         this.user = user;
     }
 
-
     public void toggleStatus() {
-        if (this.status.equals("WIP")) {
+        if ("WIP".equals(this.status)) {
             this.status = "DONE";
         }
     }
@@ -130,15 +124,17 @@ public class Todo {
                 ", user=" + user +
                 '}';
     }
-
-
     @PrePersist
-    protected void onCreate() {
-        if (this.startDate == null) {
-            this.startDate = LocalDate.now();
+    void create() {
+        if (this.status == null) {
+            this.status = "WIP";  // Set default status if null
         }
         if (this.endDate == null) {
-            this.endDate = LocalDate.now().plusDays(10);
+            this.endDate = (this.startDate != null) ? this.startDate.plusDays(10) : LocalDate.now().plusDays(10);  // Set endDate to 10 days after startDate if null
         }
     }
+
+
+
+
 }

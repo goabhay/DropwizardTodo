@@ -1,5 +1,6 @@
 package com.msrit.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.*;
@@ -35,6 +36,7 @@ public class User {
         this.id = id;
     }
 
+    @JsonIgnore
     public List<Todo> getTodos() {
         return todos;
     }

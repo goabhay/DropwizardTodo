@@ -1,3 +1,28 @@
+#logging:
+#  level: INFO
+#  loggers:
+#    com.msrit: DEBUG
+#
+#server:
+#  applicationConnectors:
+#    - type: http
+#      port: 8081
+#  adminConnectors:
+#    - type: http
+#      port: 8082
+## jdbc:mysql://db:3306/stu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+#database:
+#  driverClass: com.mysql.cj.jdbc.Driver
+#  user: root
+#  password: pass
+#  url: jdbc:mysql://db:3306/stu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+#  properties:
+#    hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+#    hibernate.show_sql: true
+#    hibernate.format_sql: true
+#    hibernate.use_sql_comments: false
+#    hibernate.hbm2ddl.auto: update
+
 logging:
   level: INFO
   loggers:
@@ -6,16 +31,16 @@ logging:
 server:
   applicationConnectors:
     - type: http
-      port: 8080
+      port: 8081
   adminConnectors:
     - type: http
-      port: 8081
-# jdbc:mysql://db:3306/stu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      port: 8082
+
 database:
   driverClass: com.mysql.cj.jdbc.Driver
   user: root
-  password: root
-  url: jdbc:mysql://localhost:3306/stu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  password: pass
+  url: jdbc:mysql://db:3306/stu?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
   properties:
     hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate.show_sql: true
