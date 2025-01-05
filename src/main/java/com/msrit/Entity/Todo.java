@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
 @Entity
@@ -12,7 +14,9 @@ public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotNull(message = "title cann't be null")
     private String title;
+    @NotNull(message = "description can't be null")
     private String description;
     private String status;
 
@@ -74,7 +78,8 @@ public class Todo {
     //@JsonSetter("status")
     public void setStatus(String status) {
         if(this.status.equals("null")){
-            this.status = "WIP";
+//            this.status = "WIP";
+            this.status = "TODO";
         }
         else this.status = status;
     }
@@ -107,9 +112,16 @@ public class Todo {
     }
 
     public void toggleStatus() {
-        if ("WIP".equals(this.status)) {
+//        if ("WIP".equals(this.status)) {
+//            this.status = "DONE";
+//        }
+        if(this.status.equals("TODO")){
+            this.status = "WIP";
+        }
+        else if(this.status.equals("WIP")){
             this.status = "DONE";
         }
+        else this.status = "DONE";
     }
 
     @Override
@@ -127,7 +139,7 @@ public class Todo {
     @PrePersist
     void create() {
         if (this.status == null) {
-            this.status = "WIP";  // Set default status if null
+            this.status = "TODO";
         }
         if (this.endDate == null) {
             this.endDate = (this.startDate != null) ? this.startDate.plusDays(10) : LocalDate.now().plusDays(10);  // Set endDate to 10 days after startDate if null

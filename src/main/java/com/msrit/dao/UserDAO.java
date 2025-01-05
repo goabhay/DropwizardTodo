@@ -54,15 +54,14 @@ public class UserDAO extends AbstractDAO<User> {
         return user;
     }
 
-    public List<Todo> pendingTodos(int uid) {
-        Query q = currentSession().createQuery(
-                "select t from User u join u.todos t where u.id = :uid and t.status = :status",
-                Todo.class
-        );
-        q.setParameter("uid", uid);
-        q.setParameter("status", "WIP");
-        return q.getResultList();
-    }
-
+public List<Todo> pendingTodos(int uid) {
+    Query q = currentSession().createQuery(
+            "select t from User u join u.todos t where u.id = :uid and t.status != :status",
+            Todo.class
+    );
+    q.setParameter("uid", uid);
+    q.setParameter("status", "DONE"); // Use enum instead of string
+    return q.getResultList();
+}
 
 }

@@ -3,6 +3,8 @@ package com.msrit.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.*;
 
 @Entity
@@ -10,6 +12,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotNull(message = "user name can't be null")
     private String name;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

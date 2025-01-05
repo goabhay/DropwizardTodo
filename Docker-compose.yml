@@ -25,7 +25,7 @@ services:
       - db
 
   backend-app:
-    image: ghcr.io/goabhay/todo:1.5
+    image: ghcr.io/goabhay/todo:1.7
     ports:
       - "8083:8081"
     depends_on:
